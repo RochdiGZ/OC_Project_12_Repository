@@ -60,3 +60,5 @@ Django via `http://127.0.0.1:8000/admin`.
 ### 📖 Information utile
 Pour toute information sur les besoins d'exécution de l'application `Epic_Events_CRM`, veuillez me contacter par email :
 `Rochdi.GUEZGUEZ@Gmail.Com`
+`Vous pouvez ainsi accéder à la documentation `Postman` de notre application via :`
+https://documenter.getpostman.com/view/26440710/2s93ecuUsb
