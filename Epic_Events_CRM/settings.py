@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'authentication',
-    'customers',
+    'clients',
 ]
 
 MIDDLEWARE = [
@@ -132,6 +132,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Add the custom user model
 AUTH_USER_MODEL = 'authentication.Employee'
+
+LOGIN_URL = "login"
+
+LOGIN_REDIRECT_URL = "crm"
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
