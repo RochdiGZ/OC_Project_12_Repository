@@ -16,9 +16,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from customers.views import CustomerViewSet
+from rest_framework import routers
+
+router = routers.DefaultRouter()
+router.register('customers', CustomerViewSet, basename='customers')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('authentication.urls')),
     path('', include('rest_framework.urls', namespace='rest_framework')),
+    path('crm/', include(router.urls))
 ]
