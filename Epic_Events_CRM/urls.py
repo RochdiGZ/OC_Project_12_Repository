@@ -16,13 +16,17 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from clients.views import ClientViewSet, ContractViewSet, ContractStatusViewSet
+from clients.views import ClientViewSet, ContractViewSet, ContractStatusViewSet, ReadEventViewSet, EventViewSet
 from rest_framework import routers
 
 router = routers.DefaultRouter()
 router.register('clients', ClientViewSet, basename='clients')
+
 router.register('contracts', ContractViewSet, basename='contracts')
 router.register('signed_contracts', ContractStatusViewSet, basename='signed_contracts')
+
+router.register("events", ReadEventViewSet, basename="events")
+router.register(r"^(?P<contract_id>[^/.]+)/events", EventViewSet, basename="event")
 
 urlpatterns = [
     path('admin/', admin.site.urls),
