@@ -2,7 +2,7 @@ from django.conf import settings
 from django.db import models
 
 
-class Customer(models.Model):
+class Client(models.Model):
     first_name = models.CharField(max_length=25)
     last_name = models.CharField(max_length=25)
     email = models.EmailField(max_length=100, unique=True)
@@ -25,7 +25,7 @@ class Customer(models.Model):
         verbose_name = 'client'
 
     def __str__(self):
-        return f"Customer {id} : {self.first_name} {self.last_name}, Company : #{self.company_name}"
+        return f"Client {id} : {self.first_name} {self.last_name}, Company : #{self.company_name}"
 
 
 class Contract(models.Model):
@@ -37,14 +37,14 @@ class Contract(models.Model):
         limit_choices_to={"role": "sales"},
     )
     client = models.ForeignKey(
-        to=Customer,
-        on_delete=models.CASCADE,
-        limit_choices_to={"status": True},
+        Client,
         related_name="contract",
+        on_delete=models.CASCADE,
+        null=True
     )
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
-    status = models.BooleanField(default=False, verbose_name="Signed")
+    status = models.BooleanField(default=False)
     amount = models.FloatField(blank=True, null=True)
     payment_due = models.DateField(blank=True, null=True)
 
@@ -53,4 +53,20 @@ class Contract(models.Model):
         verbose_name = 'contract'
 
     def __str__(self):
-        return f"Contract: {id} - Customer: {Customer.company_name}  - Sales contact: {self.sales_contact}"
+        return f"Contract: {id} - Client: {Client.company_name}  - Sales contact: {self.sales_contact}"
+
+
+class ContractStatus(models.Model):
+    contract = models.OneToOneField(
+        Contract,
+        on_delete=models.CASCADE,
+        limit_choices_to={'status': 'True'},
+        null=False,
+        primary_key=True
+    )
+
+    class Meta:
+        ordering = ['-contract__id']
+
+    def __str__(self):
+        return f"Contract: {self.contract}  - Sales contact: {Contract.sales_contact}"
