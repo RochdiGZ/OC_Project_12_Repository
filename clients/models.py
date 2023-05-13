@@ -70,3 +70,39 @@ class ContractStatus(models.Model):
 
     def __str__(self):
         return f"Contract: {self.contract}  - Sales contact: {Contract.sales_contact}"
+
+
+class Event(models.Model):
+    client = models.ForeignKey(
+        Client,
+        related_name="event_client",
+        on_delete=models.CASCADE,
+        null=True
+    )
+    date_created = models.DateTimeField(auto_now_add=True)
+    date_updated = models.DateTimeField(auto_now=True)
+    support_contact = models.ForeignKey(
+        to=settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        limit_choices_to={"role": "support"},
+    )
+    event_status = models.ForeignKey(
+        ContractStatus,
+        related_name="event",
+        on_delete=models.CASCADE,
+        null=True
+    )
+    name = models.CharField(max_length=50, blank=False, null=False, unique=True)
+    attendees = models.PositiveIntegerField(blank=True, null=True)
+    event_date = models.DateField(blank=True, null=True)
+    notes = models.TextField(max_length=1000, blank=True, null=True)
+
+    class Meta:
+        ordering = ['-date_updated']
+        verbose_name = 'event'
+        constraints = [models.UniqueConstraint(fields=['event_status', 'name'], name="unique_event")]
+
+    def __str__(self):
+        return f"Event : {self.name}"
