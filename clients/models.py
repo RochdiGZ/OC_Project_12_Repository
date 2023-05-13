@@ -26,3 +26,31 @@ class Customer(models.Model):
 
     def __str__(self):
         return f"Customer {id} : {self.first_name} {self.last_name}, Company : #{self.company_name}"
+
+
+class Contract(models.Model):
+    sales_contact = models.ForeignKey(
+        to=settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        limit_choices_to={"role": "sales"},
+    )
+    client = models.ForeignKey(
+        to=Customer,
+        on_delete=models.CASCADE,
+        limit_choices_to={"status": True},
+        related_name="contract",
+    )
+    date_created = models.DateTimeField(auto_now_add=True)
+    date_updated = models.DateTimeField(auto_now=True)
+    status = models.BooleanField(default=False, verbose_name="Signed")
+    amount = models.FloatField(blank=True, null=True)
+    payment_due = models.DateField(blank=True, null=True)
+
+    class Meta:
+        ordering = ['-date_updated']
+        verbose_name = 'contract'
+
+    def __str__(self):
+        return f"Contract: {id} - Customer: {Customer.company_name}  - Sales contact: {self.sales_contact}"
