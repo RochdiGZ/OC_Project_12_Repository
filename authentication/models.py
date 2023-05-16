@@ -47,6 +47,7 @@ class Employee(AbstractBaseUser, PermissionsMixin):
 
     class Meta:
         verbose_name = "Email User"
+        verbose_name_plural = "Emails Users"
 
     def __str__(self):
         return self.email
