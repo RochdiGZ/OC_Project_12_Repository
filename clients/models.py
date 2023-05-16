@@ -14,8 +14,9 @@ class Client(models.Model):
     sales_contact = models.ForeignKey(
         to=settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
-        null=True,
-        blank=True,
+        default=1,
+        null=False,
+        blank=False,
         limit_choices_to={"role": "sales"},
     )
     is_prospect = models.BooleanField(blank=False, default=True)
@@ -25,16 +26,15 @@ class Client(models.Model):
         verbose_name = 'client'
 
     def __str__(self):
-        return f"Client {id} : {self.first_name} {self.last_name}, Company : #{self.company_name}"
+        return f"Client : #{self.first_name} {self.last_name}, Company : #{self.company_name}"
 
 
 class Contract(models.Model):
     sales_contact = models.ForeignKey(
         to=settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE,
-        null=True,
-        blank=True,
-        limit_choices_to={"role": "sales"},
+        on_delete=models.SET_NULL,
+        limit_choices_to={'role': 'sales'},
+        null=True
     )
     client = models.ForeignKey(
         Client,
@@ -53,7 +53,7 @@ class Contract(models.Model):
         verbose_name = 'contract'
 
     def __str__(self):
-        return f"Contract: {id} - Client: {Client.company_name}  - Sales contact: {self.sales_contact}"
+        return f"created with {self.sales_contact}"
 
 
 class ContractStatus(models.Model):
@@ -67,9 +67,11 @@ class ContractStatus(models.Model):
 
     class Meta:
         ordering = ['-contract__id']
+        verbose_name = 'contract status'
+        verbose_name_plural = 'contracts status'
 
     def __str__(self):
-        return f"Contract: {self.contract}  - Sales contact: {Contract.sales_contact}"
+        return f"Contract : {self.contract}"
 
 
 class Event(models.Model):
@@ -83,10 +85,10 @@ class Event(models.Model):
     date_updated = models.DateTimeField(auto_now=True)
     support_contact = models.ForeignKey(
         to=settings.AUTH_USER_MODEL,
+        default=1,
         on_delete=models.CASCADE,
-        null=True,
-        blank=True,
-        limit_choices_to={"role": "support"},
+        limit_choices_to={'role': 'support'},
+        null=True
     )
     event_status = models.ForeignKey(
         ContractStatus,
@@ -105,4 +107,4 @@ class Event(models.Model):
         constraints = [models.UniqueConstraint(fields=['event_status', 'name'], name="unique_event")]
 
     def __str__(self):
-        return f"Event : {self.name}"
+        return f"{self.name}"

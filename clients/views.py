@@ -1,4 +1,4 @@
-from rest_framework.permissions import DjangoModelPermissions
+from rest_framework.permissions import DjangoModelPermissions, IsAuthenticated
 from rest_framework.exceptions import ValidationError
 from django.core.exceptions import ObjectDoesNotExist
 from rest_framework.response import Response
@@ -21,7 +21,7 @@ class ClientViewSet(viewsets.ModelViewSet):
     """
     serializer_class = ClientSerializer
     queryset = Client.objects.all()
-    permission_classes = [DjangoModelPermissions]
+    permission_classes = [IsAuthenticated, DjangoModelPermissions]
     filter_backends = [filters.SearchFilter]
     search_fields = ['company_name', 'email']
 
@@ -85,7 +85,7 @@ class ContractViewSet(viewsets.ModelViewSet):
         Add, retrieve, update and delete a contract.
     """
     queryset = Contract.objects.all()
-    permission_classes = [DjangoModelPermissions]
+    permission_classes = [IsAuthenticated, DjangoModelPermissions]
     filter_backends = [filters.SearchFilter]
     search_fields = ['date_created', 'amount', 'client_id__email', 'client_id__company_name']
 
@@ -173,7 +173,7 @@ class ContractStatusViewSet(viewsets.ModelViewSet):
     """
     serializer_class = ContractStatusSerializer
     queryset = ContractStatus.objects.all()
-    permission_classes = [DjangoModelPermissions]
+    permission_classes = [IsAuthenticated, DjangoModelPermissions]
 
 
 class ReadEventViewSet(viewsets.ReadOnlyModelViewSet):
@@ -183,7 +183,7 @@ class ReadEventViewSet(viewsets.ReadOnlyModelViewSet):
 
     serializer_class = AllEventSerializer
     queryset = Event.objects.all()
-    permission_classes = [DjangoModelPermissions]
+    permission_classes = [IsAuthenticated, DjangoModelPermissions]
     search_fields = ['event_date', 'client_id__email', 'client_id__company_name']
     filter_backends = (filters.SearchFilter,)
 
@@ -194,7 +194,7 @@ class EventViewSet(viewsets.ModelViewSet):
     """
 
     queryset = Event.objects.all()
-    permission_classes = [DjangoModelPermissions]
+    permission_classes = [IsAuthenticated, DjangoModelPermissions]
     search_fields = ['event_date', 'client_id__email', 'client_id__company_name']
     filter_backends = (filters.SearchFilter,)
 
