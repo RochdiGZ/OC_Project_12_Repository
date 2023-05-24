@@ -20,7 +20,7 @@ git clone https://github.com/RochdiGZ/OC_Project_12_Repository.git
 cd OC_Project_12_Repository
 ```
 ```bash
-python -m venv .env
+python.exe -m venv .env
 ```
 ```bash
 .env/Scripts/activate
@@ -36,13 +36,20 @@ pip install -r requirements.txt
 ```bash
 flake8 --format=html --htmldir=flake8_report --max-line-length=119
 ```
-### ⚙️ Lancer le serveur de développement
-```bash
-python manage.py runserver
-``` 
+### 💿 Installer PostgreSQL en ajoutant le mot de passe 'database1234' pour le prochain accès
+### ⚙️ Lancer SQL Shell (psql) en utilisant le mot de passe 'database1234'
+### ⚙️ Créer la base de données PostgreSQL (p12_database) à l'aide de SQL Shell
+CREATE DATABASE p12_database;
+### ⚙️ Créer l'utilisateur (p12_admin) de la base de données PostgreSQL à l'aide de SQL Shell
+CREATE USER p12_admin WITH ENCRYPTED PASSWORD '123456';
+### ⚙️ Modifier les rôles du nouvel utilisateur (p12_admin) à l'aide de SQL Shell
+ALTER ROLE p12_admin SET client_encoding TO 'utf8';
+ALTER ROLE p12_admin SET default_transaction_isolation TO 'read committed';
+GRANT ALL PRIVILEGES ON DATABASE p12_database to p12_admin;
+ALTER DATABASE p12_database OWNER TO p12_admin;
 ### ⚙️ Appliquer toutes les migrations
 ```bash
-python manage.py migrate
+python.exe manage.py migrate
 ``` 
 ### ⚙️ Créer un super utilisateur pour se connecter à partir de l'interface de l'administration Django
 ```bash
@@ -54,11 +61,15 @@ avec confirmation du mot de passe. Par exemple,
 - First_name : Rochdi
 - Last_name : GUEZGUEZ
 - Password: secret@django
+### ⚙️ Lancer le serveur de développement
+```bash
+python.exe manage.py runserver
+```
 ### ⚙️ Se connecter avec l'interface de l'administration Django
 - Une fois le serveur de développement lancé, vous pouvez voir, dans un navigateur web, la page de l'administration 
 Django via `http://127.0.0.1:8000/admin`. 
 ### 📖 Information utile
 Pour toute information sur les besoins d'exécution de l'application `Epic_Events_CRM`, veuillez me contacter par email :
 `Rochdi.GUEZGUEZ@Gmail.Com`
-`Vous pouvez ainsi accéder à la documentation `Postman` de notre application via :`
-https://documenter.getpostman.com/view/26440710/2s93ecuUsb
+Vous pouvez ainsi accéder à la documentation `Postman` de notre application via : 
+`https://documenter.getpostman.com/view/26440710/2s93ecuUsb`
