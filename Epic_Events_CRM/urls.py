@@ -16,10 +16,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+
+from Epic_Events_CRM import settings
+from django.conf.urls.static import static
+from authentication.views import EmployeeViewSet
 from clients.views import ClientViewSet, ContractViewSet, ContractStatusViewSet, ReadEventViewSet, EventViewSet
 from rest_framework import routers
 
 router = routers.DefaultRouter()
+router.register('employees', EmployeeViewSet, basename='employee')
 router.register('clients', ClientViewSet, basename='clients')
 
 router.register('contracts', ContractViewSet, basename='contracts')
@@ -28,9 +33,15 @@ router.register('signed_contracts', ContractStatusViewSet, basename='signed_cont
 router.register("events", ReadEventViewSet, basename="events")
 router.register(r"^(?P<contract_id>[^/.]+)/events", EventViewSet, basename="event")
 
+# For customized admin page's title
+admin.site.index_title = 'Welcome to the CRM of Epic Events'
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('authentication.urls')),
     path('', include('rest_framework.urls', namespace='rest_framework')),
+    path('', include('authentication.urls')),
     path('crm/', include(router.urls))
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATICFILES_DIRS)
