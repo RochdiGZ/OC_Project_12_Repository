@@ -47,6 +47,9 @@ def create_groups():
     support_group.save()
     support_group.permissions.set(support_permissions)
 
+    manager_group = Group(name='manager')
+    manager_group.save()
+
 
 def add_to_group(new_employee):
     """
@@ -57,11 +60,14 @@ def add_to_group(new_employee):
 
     sales_group = Group.objects.get(name='sales')
     support_group = Group.objects.get(name='support')
+    manager_group = Group.objects.get(name='manager')
 
     if new_employee.role == 'sales':
         new_employee.groups.add(sales_group)
     elif new_employee.role == 'support':
         new_employee.groups.add(support_group)
+    else:
+        new_employee.groups.add(manager_group)
 
 
 NOT_ALLOWED = "You are not a manager !"
