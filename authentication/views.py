@@ -1,9 +1,9 @@
 # authentication/views.py
-from django.shortcuts import get_object_or_404
 from django.http import HttpResponse
 from rest_framework.permissions import DjangoModelPermissions
 from rest_framework.exceptions import ValidationError
 from django.core.exceptions import ObjectDoesNotExist
+# from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 from rest_framework import status, viewsets
 from rest_framework import filters
@@ -22,17 +22,6 @@ class EmployeeViewSet(viewsets.ModelViewSet):
     permission_classes = [DjangoModelPermissions, EmployeePermission]
     search_fields = ['email', 'role']
     filter_backends = (filters.SearchFilter,)
-
-    def list(self, request, *args, **kwargs):
-        queryset = Employee.objects.all()
-        serializer = UserSerializer(queryset, many=True)
-        return Response(serializer.data)
-
-    def retrieve(self, request, pk=None, *args, **kwargs):
-        queryset = Employee.objects.all()
-        user = get_object_or_404(queryset, pk=pk)
-        serializer = UserSerializer(user)
-        return Response(serializer.data)
 
     def destroy(self, request, *args, **kwargs):
         try:

@@ -1,10 +1,20 @@
 # authentication/serializers.py
+from django.contrib.auth.models import Group
 from rest_framework import serializers
 from .models import Employee
 from django.utils import timezone
 
 
+class GroupSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Group
+        fields = ('name',)
+
+
 class UserSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(style={'input_type': 'password'})
+    groups = GroupSerializer(many=True, read_only=True)
+
     class Meta:
         model = Employee
         fields = ['id', 'email', 'password', 'first_name', 'last_name', 'role',
@@ -16,23 +26,15 @@ class UserSerializer(serializers.ModelSerializer):
             'last_name': {'required': True},
             'date_joined': {'default': timezone.now, 'format': '%d %B %Y %H:%M'}
         }
-    password = serializers.CharField(style={'input_type': 'password'})
-
     # date_joined = serializers.DateTimeField(default=timezone.now, format='%d %B %Y %H:%M')
-
-    groups = serializers.SlugRelatedField(
-        many=True,
-        read_only=True,
-        slug_field='name',
-    )
 
     def validate(self, data):
         """
-            Check that email ends with @gmail.com
+            Check that email ends with @epicevents.com
         """
-        if not data['email'].endswith('@gmail.com'):
+        if not data['email'].endswith('@epicevents.com'):
             raise serializers.ValidationError(
-                "Wrong email format: Please make sure to write @gmail.com")
+                "Wrong email format: Please make sure to write @epicevents.com")
         return data
 
     def create(self, validated_data):
@@ -40,7 +42,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         """
-            Update an employee: password and email.
+            Update an employee.
         """
         instance.set_password(validated_data['password'])
         instance.email = validated_data.get('email', instance.email)
