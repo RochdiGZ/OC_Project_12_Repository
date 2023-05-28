@@ -47,9 +47,6 @@ def create_groups():
     support_group.save()
     support_group.permissions.set(support_permissions)
 
-    manager_group = Group(name='manager')
-    manager_group.save()
-
 
 def add_to_group(new_employee):
     """
@@ -79,9 +76,7 @@ class EmployeePermission(permissions.BasePermission):
     """
         Check if the connected user is manager.
     """
-
-    def __init__(self):
-        self.message = None
+    message = ""
 
     def has_permission(self, request, view):
         self.message = NOT_ALLOWED
@@ -95,9 +90,7 @@ class ObjectPermission(permissions.BasePermission):
         Check if the connected user
         is the main contact in charge of this contract or client;
     """
-
-    def __init__(self):
-        self.message = None
+    message = ""
 
     def has_object_permission(self, request, view, obj):
         self.message = NOT_IN_CHARGE
@@ -117,9 +110,7 @@ class EventPermission(permissions.BasePermission):
         Check if the connected user
         is the main contact in charge of this event;
     """
-
-    def __init__(self):
-        self.message = None
+    message = ""
 
     def has_permission(self, request, view):
         self.message = NOT_SALES_IN_CHARGE
