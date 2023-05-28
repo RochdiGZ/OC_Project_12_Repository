@@ -57,7 +57,7 @@ python.exe manage.py createsuperuser
 ``` 
 Dans l'étape suivante, il suffit de rester dans le terminal pour taper un nom d'utilisateur (email) et un mot de passe 
 avec confirmation du mot de passe. Par exemple, 
-- Email: rochdi@gmail.com
+- Email: rochdi@epicevents.com
 - First_name : Rochdi
 - Last_name : GUEZGUEZ
 - Password: secret@django
@@ -67,7 +67,11 @@ python.exe manage.py runserver
 ```
 ### ⚙️ Se connecter avec l'interface de l'administration Django
 - Une fois le serveur de développement lancé, vous pouvez voir, dans un navigateur web, la page de l'administration 
-Django via `http://127.0.0.1:8000/admin`. 
+Django via `http://127.0.0.1:8000/admin`
+- Utiliser Email & Password du super utilisateur pour se connecter l'interface de l'administration Django
+- Ajouter le groupe `sales` à la table `auth_group`
+- Ajouter le groupe `support` à la table `auth_group`
+- Ajouter le groupe `manager` à la table `auth_group`
 ### 📖 Information utile
 Pour toute information sur les besoins d'exécution de l'application `Epic_Events_CRM`, veuillez me contacter par email :
 `Rochdi.GUEZGUEZ@Gmail.Com`
